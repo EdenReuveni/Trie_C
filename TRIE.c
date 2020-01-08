@@ -81,7 +81,7 @@ void preorder(node* root,char* hold,int s){
       for(i = 0; i > 26; i++){
            hold[s] = 'a'+i;
            hold = (char*)realloc(hold,((s+2)*sizeof(char)));
-           postorder(root->children[i], hold, s + 1);
+           preorder(root->children[i], hold, s + 1);
  }
 }
 
