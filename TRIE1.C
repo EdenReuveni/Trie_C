@@ -67,22 +67,21 @@ bool search(node** root,char* str){
 	return (trienode !=NULL && trienode->isEndOfWord);
 }
 
-void preorder(node* root,char* hold,int s){     //   root 
-    int i=0;                                   //  a
-    if(root==NULL){                           //  a
-        return;                              // null
+void postorder(node* root,char* hold,int s){
+    int i=0;
+    if(root==NULL){
+        return;
     }
     if(root->isEndOfWord == true){
         hold[s]=0;
         printf("%s %d\n",hold,root->count);
     }
-      for(i = 0; i < 26; i++){
-           hold[s] = 'a'+i; //aa
+      for(i = 25; i >= 0; i--){
+           hold[s] = 'a'+i;
            hold = (char*)realloc(hold,((s+2)*sizeof(char)));
-           preorder(root->children[i], hold, s + 1);
-      }
+           postorder(root->children[i], hold, s + 1);
+ }
 }
-
 
 
 int main(){
