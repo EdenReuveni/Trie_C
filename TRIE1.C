@@ -29,13 +29,14 @@ t->isEndOfWord = false;
 }
 
 void add_to_trie(node** root,char* str){//maybe chenge to boolean
-   	int level; 
+    int level; 
     int length = strlen(str); 
     int index; 
 	node* trienode = (*root);
         //aab
 	 for (level = 0; level < length; level++) 
-    {
+    	 {        
+                if(*(str+level)>=97  && *(str+level)<=122){
 		if(trienode->children[*(str+level)-CONVERT]==NULL){ 
 			create(&(trienode->children[*(str+level)-CONVERT]),*(str+level));
 		}
@@ -43,6 +44,7 @@ void add_to_trie(node** root,char* str){//maybe chenge to boolean
             trienode->children[*(str+level)-CONVERT]->count++;
         }
 		trienode = trienode->children[*(str+level)-CONVERT];
+}
 
 	}
     
@@ -86,13 +88,6 @@ void postorder(node* root,char* hold,int s){
 
 int main(){
 
- char* str4 = "ab";
- char* str2 = "ab";
- char* str3 = "bbcd";
- char* str5 = "basaddsbasdasdasdsadasdasdasdasdsadsadsadsadsadcd";
- char* str22="zjjks";
-  char* str21="nsnsjkjjs";
-    char* str20="nsnsjkjjs";
 
 
  char* hold;
@@ -107,22 +102,34 @@ for(int i=0;i<NUM_LETTERS;i++){//initalized first 26 sons
     root->children[i] =NULL;
 }
 
-add_to_trie(&root,str4);
-add_to_trie(&root,str2);
-add_to_trie(&root,str3);
-add_to_trie(&root,str5);
-add_to_trie(&root,str20);
-add_to_trie(&root,str21);
-add_to_trie(&root,str22);
+int i=0;
+char* add =(char *)malloc(sizeof(char));
+char buffer=getchar();
+*(add+i) = buffer;
+while(buffer!=-1){
+
+//printf("%c",buffer);
+while( buffer !=' ' && buffer!='\n' && buffer!=-1 ){
+    buffer=getchar();
+    i++;
+    *(add+i) = buffer;
+    add = (char*)realloc(add,(i+1)*sizeof(char));
+}
+*(add+i+1)=0;
+
+add_to_trie(&root,add);
+free(add);
+i=0;
+add =(char *)malloc(sizeof(char));
+buffer=getchar();
+*(add+i) = buffer;
+}
+
+free(add);
 
 
-//preorder(root,hold,0);
+postorder(root,hold,0);
 free(hold);
-
-//printf("The word %s is found  : %d", str3,search(&root,str3));
-
-
-
 
     return 0;
 
