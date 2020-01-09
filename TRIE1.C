@@ -4,7 +4,6 @@
 #include <string.h>
 #define NUM_LETTERS 26
 #define CONVERT 97
-
 typedef struct node {
 char letter;
 long unsigned int count;
@@ -78,7 +77,7 @@ void postorder(node* root,char* hold,int s){
         hold[s]=0;
         printf("%s %d\n",hold,root->count);
     }
-      for(i = 25; i >= 0; i--){
+      for(i = 0; i > 26; i++){
            hold[s] = 'a'+i;
            hold = (char*)realloc(hold,((s+2)*sizeof(char)));
            postorder(root->children[i], hold, s + 1);
@@ -87,8 +86,6 @@ void postorder(node* root,char* hold,int s){
 
 
 int main(){
-
-
 
  char* hold;
  hold = (char *)malloc(sizeof(char));
@@ -130,6 +127,10 @@ free(add);
 
 postorder(root,hold,0);
 free(hold);
+
+
+
+
 
     return 0;
 

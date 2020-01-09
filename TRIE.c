@@ -4,7 +4,6 @@
 #include <string.h>
 #define NUM_LETTERS 26
 #define CONVERT 97
-
 typedef struct node {
 char letter;
 long unsigned int count;
@@ -129,7 +128,6 @@ free(add);
 preorder(root,hold,0);
 free(hold);
 
-//printf("The word %s is found  : %d", str3,search(&root,str3));
 
 
 
