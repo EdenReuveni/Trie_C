@@ -30,7 +30,6 @@ t->isEndOfWord = false;
 void add_to_trie(node** root,char* str){//maybe chenge to boolean
     int level; 
     int length = strlen(str); 
-    int index; 
 	node* trienode = (*root);
         //aab
 	 for (level = 0; level < length; level++) 
@@ -55,7 +54,6 @@ bool search(node** root,char* str){
 
     int level; 
     int length = strlen(str); 
-    int index; 
 	node* trienode = (*root);
 	 for (level = 0; level < length; level++) 
     { 
@@ -75,17 +73,35 @@ void preorder(node* root,char* hold,int s){
     }
     if(root->isEndOfWord == true){
         hold[s]=0;
-        printf("%s %d\n",hold,root->count);
+        printf("%s %ld\n",hold,root->count);
     }
-      for(i = 0; i > 26; i++){
+      for(i = 0; i < 26; i++){
            hold[s] = 'a'+i;
            hold = (char*)realloc(hold,((s+2)*sizeof(char)));
            preorder(root->children[i], hold, s + 1);
  }
 }
 
+void postorder(node* root,char* hold,int s){
+    int i=0;
+    if(root==NULL){
+        return;
+    }
+    if(root->isEndOfWord == true){
+        hold[s]=0;
+        printf("%s %ld\n",hold,root->count);
+    }
+      for(i = 25; i >= 0; i--){
+           hold[s] = 'a'+i;
+           hold = (char*)realloc(hold,((s+2)*sizeof(char)));
+           postorder(root->children[i], hold, s + 1);
+ }
+}
 
-int main(){
+
+int main(int argc,char *argv[]){
+
+if(argc==1 || (argc==2 && argv[1][0]=='r')){
 
  char* hold;
  hold = (char *)malloc(sizeof(char));
@@ -124,12 +140,16 @@ buffer=getchar();
 
 free(add);
 
-
+if(argc==1){
 preorder(root,hold,0);
+}
+else{
+    postorder(root,hold,0);
+}
 free(hold);
 
-
-
+ 
+}
 
 
     return 0;

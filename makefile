@@ -1,11 +1,13 @@
-all:frequency frequency_r  
+CC=gcc
+FLAG=-Wall
+AR=ar
+fPIC=-fPIC
+all:frequency   
 
 frequency:
-	gcc -o frequency TRIE.c
-frequency_r:
-	gcc -o frequency_r  TRIE1.c 
+	$(CC) $(FLAG) TRIE.c -g -o frequency
 
 .PHONY: clean all
 
 clean:
-	rm -f *.o *.a  frequency_r frequency
+	rm -f *.o *.a  frequency
