@@ -50,20 +50,13 @@ void add_to_trie(node** root,char* str){//maybe chenge to boolean
     return;
 }
 
-bool search(node** root,char* str){
-
-    int level; 
-    int length = strlen(str); 
-	node* trienode = (*root);
-	 for (level = 0; level < length; level++) 
-    { 
-		if (!trienode->children[*(str+level)-CONVERT]) 
-            return false; 
-		trienode = trienode->children[*(str+level)-CONVERT];
-
-	}
-	//aab
-	return (trienode !=NULL && trienode->isEndOfWord);
+void free_trie(node* root){
+    for(int i=0;i<NUM_LETTERS;i++){
+        if(root->children[i]!=NULL){
+            free_trie(root->children[i]);
+        }
+    }
+    free(root);
 }
 
 void preorder(node* root,char* hold,int s){
@@ -121,8 +114,7 @@ char buffer=getchar();
 *(add+i) = buffer;
 while(buffer!=-1){
 
-//printf("%c",buffer);
-while( buffer !=' ' && buffer!='\n' && buffer!=-1 ){
+    while( buffer !=' ' && buffer!='\n' && buffer!=-1 ){
     buffer=getchar();
     i++;
     *(add+i) = buffer;
@@ -147,9 +139,8 @@ else{
     postorder(root,hold,0);
 }
 free(hold);
-
- 
 }
+free_trie(root);
 
 
     return 0;
