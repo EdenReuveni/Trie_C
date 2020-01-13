@@ -4,7 +4,7 @@ AR=ar
 fPIC=-fPIC
 all:frequency   
 
-frequency:
+frequency:TRIE.c
 	$(CC) $(FLAG) TRIE.c -g -o frequency
 
 .PHONY: clean all

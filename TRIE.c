@@ -27,31 +27,30 @@ for(int i=0;i<NUM_LETTERS;i++){//Initalized first 26 sons to be null
     t->children[i] = NULL;
 }
 t->letter = c;
-t->count = 1;
+t->count = 0;
 t->isEndOfWord = false;
 (*add) = t;
 
 }
 
 void add_to_trie(node** root,char* str){//This function adds the node we got to the TRIE 
-    int level; 
+    int level=0; 
     int length = strlen(str); 
+    if(str[0] == ' ' || str[0]=='\t' || str[0]=='\n'){
+        return;
+    }
 	node* trienode = (*root);
-	 for (level = 0; level < length; level++) 
+	 for (; level < length; level++) 
     	 {        
-                if(*(str+level)>='a'  && *(str+level)<='z'){//Check to see that the word is small letter
-		if(trienode->children[*(str+level)-CONVERT]==NULL){ 
-			create(&(trienode->children[*(str+level)-CONVERT]),*(str+level));//If none exsist create the node
+            if(*(str+level)>='a'  && *(str+level)<='z'){//Check to see that the word is small letter
+		    if(trienode->children[*(str+level)-CONVERT]==NULL){ 
+			    create(&(trienode->children[*(str+level)-CONVERT]),*(str+level));//If none exsist create the node
 		}
-        else{
-            trienode->children[*(str+level)-CONVERT]->count++;//If does exsist make the counter grow in 1
-        }
 		trienode = trienode->children[*(str+level)-CONVERT];
-}
-
+        }
 	}
-    
 	trienode->isEndOfWord = true;  //End of word
+    trienode->count +=1;
     return;
 }
 
@@ -82,9 +81,10 @@ void preorder(node* root,char* hold,int s){//Printing the words of the TRIE in b
     }
     if(root->isEndOfWord == true){
         hold[s]=0;
+	if(root->count>0)
         printf("%s %ld\n",hold,root->count);//End of the word if does print it and his appearance 
     }
-      for(i = 0; i < 26; i++){
+      for(i = 0; i < NUM_LETTERS; i++){
            hold[s] = 'a'+i;
            preorder(root->children[i], hold, s + 1);
  }
@@ -97,9 +97,10 @@ void postorder(node* root,char* hold,int s){//Printing the words of the TRIE in 
     }
     if(root->isEndOfWord == true){
         hold[s]=0;
+	if(root->count>0)
         printf("%s %ld\n",hold,root->count);//End of the word if does print it and his appearance 
     }
-      for(i = 25; i >= 0; i--){
+      for(i = NUM_LETTERS - 1; i >= 0; i--){
            hold[s] = 'a'+i;
            postorder(root->children[i], hold, s + 1);
  }
@@ -109,7 +110,7 @@ void postorder(node* root,char* hold,int s){//Printing the words of the TRIE in 
 int main(int argc,char *argv[]){
 
 
- char* hold;
+ char* hold=NULL;
  hold = (char *)malloc(sizeof(char));
 
     node* root = (node*)malloc(sizeof(node));//First element(root)
@@ -137,6 +138,7 @@ while(buffer!=-1){//If not end of word then keep getting words from the user
 
 to_lower_case(add);
 add_to_trie(&root,add);
+
 free(add);//Freeing our allocation
 i=0;
 add =(char *)malloc(sizeof(char));
